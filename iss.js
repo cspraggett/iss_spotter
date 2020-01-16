@@ -10,12 +10,18 @@ const ip = "https://api.ipify.org/?format=json";
  *   - The IP address as a string (null if error). Example: "162.245.144.188"
  */
 const fetchMyIP = callback => {
-  request(ip, (error, respons, body) => {
+  request(ip, (error, response, body) => {
     if (error) {
-      callback(error);
+      callback(error, null);
+      return;
     }
-    const data = JSON.parse(body);
-    callback(null, data.ip);
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+    const data = JSON.parse(body).ip;
+    callback(null, data);
   });
 };
 
