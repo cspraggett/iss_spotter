@@ -1,7 +1,7 @@
 const request = require("request");
 
 const getLocation = `https://ipvigilante.com/json/`;
-const getIp = "https://api.getIpify.org/?format=json";
+const getIp = `https://api.ipify.org?format=json`;
 /**
  * Makes a single API request to retrieve the user's getIp address.
  * Input:
@@ -13,6 +13,7 @@ const getIp = "https://api.getIpify.org/?format=json";
 const fetchMyIp = callback => {
   request(getIp, (error, response, body) => {
     if (error) {
+      console.log("error code");
       callback(error, null);
       return;
     }
@@ -21,7 +22,7 @@ const fetchMyIp = callback => {
       callback(Error(msg), null);
       return;
     }
-    const data = JSON.parse(body).getIp;
+    const data = JSON.parse(body).ip;
     callback(null, data);
   });
 };
@@ -50,7 +51,6 @@ const fetchISSFlyOverTimes = (coords, callback) => {
         return;
       }
       if (response.statusCode !== 200) {
-        console.log(response.statusCode);
         const msg = `Status Code ${response.statusCode} when fetching flyover times. Response ${body}`;
         callback(Error(msg), null);
         return;
@@ -61,7 +61,23 @@ const fetchISSFlyOverTimes = (coords, callback) => {
   );
 };
 
-module.exports = { fetchMyIp, fetchCoordsByIP, fetchISSFlyOverTimes };
+const nextISSTimesForMyLocation = callback => {
+  fetchMyIp((error, data) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+    fetchCoordsByIP(data, (error, data) => {
+      if (error) {
+        callback(error, null);
+        return;
+      }
+      fetchISSFlyOverTimes(data, callback);
+    });
+  });
+};
+
+module.exports = { nextISSTimesForMyLocation };
 
 // request(`${getLocation}66.207.199.230`, (error, response, body) => {
 //   const [latitude, longitude] = [
