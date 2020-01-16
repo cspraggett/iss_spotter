@@ -30,9 +30,18 @@ const { nextISSTimesForMyLocation } = require("./iss");
 //   }
 // );
 
+const convertToDate = time => {
+  return new Date(time * 1000).toUTCString();
+};
+
 nextISSTimesForMyLocation((error, passTimes) => {
   if (error) {
     return console.log("It didn't work!", error);
   }
-  console.log(passTimes);
+  for (const key in Object.keys(passTimes)) {
+    let message =
+      `Next pass at ${convertToDate(passTimes[key]["risetime"])}` +
+      `-0700 (Pacific Daylight Time) for ${passTimes[key]["duration"]} seconds!`;
+    console.log(message);
+  }
 });
