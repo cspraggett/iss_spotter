@@ -19,13 +19,13 @@ const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes } = require("./iss");
 //   }
 // });
 
-fetchISSFlyOverTimes(
-  { latitude: "43.63830", longitude: "-79.43010" },
-  (error, data) => {
-    if (error) {
-      console.log("It didn't work!", error.message);
-    } else {
-      console.log(data);
-    }
-  }
-);
+// fetchISSFlyOverTimes(
+//   { latitude: "43.63830", longitude: "-79.43010" },
+//   (error, data) => {
+//     if (error) {
+//       console.log("It didn't work!", error.message);
+//     } else {
+//       console.log(data);
+//     }
+//   }
+// );
