@@ -38,10 +38,10 @@ nextISSTimesForMyLocation((error, passTimes) => {
   if (error) {
     return console.log("It didn't work!", error);
   }
-  for (const key in Object.keys(passTimes)) {
+  for (const key of passTimes) {
     let message =
-      `Next pass at ${convertToDate(passTimes[key]["risetime"])}` +
-      `-0700 (Pacific Daylight Time) for ${passTimes[key]["duration"]} seconds!`;
+      `Next pass at ${convertToDate(key.risetime)}` +
+      `-0700 (Pacific Daylight Time) for ${key.duration} seconds!`;
     console.log(message);
   }
 });
